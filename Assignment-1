@@ -1,0 +1,14 @@
+create database movies;
+show databases;
+use movies;
+create table movies(Title varchar(50), NOT NULL, Genre varchar(40),NOT NULL, Release_Year int NOT NULL, Director varchar(30) NOT NULL);
+insert movies value("The Dark Knight", "Action, Adventure", 2008, "Chritopher Nolan"), ("Inception", "Action, Sci-fi", 2010, "Christopher Nolan");
+insert movies value("Schindler's List", "War/Drama", 1993, "Steve Speilberg"), ("The Departed", "Crime/Drama", 2006, "Martin Scorsese");
+insert movies value("The Trueman Show", "Sci-fi/Drama", 1998, "Peter Weir"), ("Jurassic World Dominion", "Action/Sci-fi", 2022, "Colin Trevorrow");
+select * from movies;
+select Title, Director from movies where Director = "Christopher Nolan";
+select * from movies order by Release_Year;
+select * from movies order by Release_Year desc;
+alter table movies add Producer varchar(50);
+select * from movies;
+alter table movies drop Producer;
