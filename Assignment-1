@@ -1,14 +1,86 @@
-create database movies;
-show databases;
-use movies;
-create table movies(Title varchar(50), NOT NULL, Genre varchar(40),NOT NULL, Release_Year int NOT NULL, Director varchar(30) NOT NULL);
-insert movies value("The Dark Knight", "Action, Adventure", 2008, "Chritopher Nolan"), ("Inception", "Action, Sci-fi", 2010, "Christopher Nolan");
-insert movies value("Schindler's List", "War/Drama", 1993, "Steve Speilberg"), ("The Departed", "Crime/Drama", 2006, "Martin Scorsese");
-insert movies value("The Trueman Show", "Sci-fi/Drama", 1998, "Peter Weir"), ("Jurassic World Dominion", "Action/Sci-fi", 2022, "Colin Trevorrow");
-select * from movies;
-select Title, Director from movies where Director = "Christopher Nolan";
-select * from movies order by Release_Year;
-select * from movies order by Release_Year desc;
-alter table movies add Producer varchar(50);
-select * from movies;
-alter table movies drop Producer;
+ubuntu@ubuntu-OptiPlex-5000:~$ sudo mysql -u root -p
+[sudo] password for ubuntu: 
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.29-0ubuntu0.22.04.2 (Ubuntu)
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| B3                 |
+| B4                 |
+| B4_emp             |
+| COMPUTER           |
+| Comp               |
+| Employe            |
+| Suyash             |
+| TE                 |
+| TEB                |
+| Webseries          |
+| books              |
+| cricket            |
+| information_schema |
+| movies             |
+| mysql              |
+| patient            |
+| performance_schema |
+| std_name           |
+| student            |
+| students           |
+| sys                |
++--------------------+
+21 rows in set (0.01 sec)
+
+mysql> use movies;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select * from movies;
++--------------------------------+------------------+-----------------+--------------+
+| Movie_Name                     | GENRE            | DIRECTOR        | RELEASE_YEAR |
++--------------------------------+------------------+-----------------+--------------+
+| Raksha Bandhan                 | Comedy and Drama | Anand L. Rai    |         2022 |
+| Sahoo                          | Psychology       | Anand L. Rai    |         2021 |
+| Shamsheera                     | Action           | Karan Malhotra  |         2022 |
+| Zindagi Chune Engineering Nahi | Psychology       | Chaggan Vlogger |         2022 |
++--------------------------------+------------------+-----------------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> describe movies;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| Movie_Name   | varchar(40) | NO   | PRI | NULL    |       |
+| GENRE        | varchar(30) | NO   |     | NULL    |       |
+| DIRECTOR     | varchar(70) | NO   |     | NULL    |       |
+| RELEASE_YEAR | int         | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+
+mysql> delete from movies where Movie_Name = "Raksha Bandhan";
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from movies;
++--------------------------------+------------+-----------------+--------------+
+| Movie_Name                     | GENRE      | DIRECTOR        | RELEASE_YEAR |
++--------------------------------+------------+-----------------+--------------+
+| Sahoo                          | Psychology | Anand L. Rai    |         2021 |
+| Shamsheera                     | Action     | Karan Malhotra  |         2022 |
+| Zindagi Chune Engineering Nahi | Psychology | Chaggan Vlogger |         2022 |
++--------------------------------+------------+-----------------+--------------+
+3 rows in set (0.00 sec)
+
+
+
