@@ -1,0 +1,103 @@
+mysql>USE EMPLOYEE;
+
+mysql> CREATE table Employee(Emp_Id int NOT NULL, Emp_Name varchar(25) UNIQUE, City varchar(15));
+
+INSERT INTO Employee VALUES(NULL, "Arush", "Mumbai");
+
+mysql>select * from Employee;
+
+mysql>INSERT INTO Employee VALUES(102, "Arushi", "Nashik");
+
+mysql>select * from Employee();
+
+mysql>CREATE table Employe(Emp_Id int PRIMARY KEY AUTO_INCREMENT, Emp_Name varchar(25) UNIQUE, City varchar(15));
+
+INSERT INTO Employe VALUES(101, "Arush", Mumbai);
+
+mysql>INSERT INTO Employee VALUES(102, "Arushi", "Nashik");
+
+mysql>INSERT INTO Employee VALUES(103, "Arnav", "Nashik");
+
+mysql>INSERT INTO Employe(Emp_Name, City) VALUES("Ashutosh", "Pune");
+
+mysql>select * from Employe;
+
+mysql>CREATE table Employ(Emp_Id int PRIMARY KEY AUTO_INCREMENT, Emp_Name varchar(25) UNIQUE, City varchar(15), DEFAULT "Pune");
+
+mysql>INSERT INTO Employ(Emp_Id, Emp_Name) VALUES(101, "Arush");
+
+mysql>INSERT INTO Employ(Emp_Name) VALUES("Arushi");
+
+mysql>INSERT INTO Employ(Emp_Name) VALUES("Arnav");
+
+mysql>INSERT INTO Employ(Emp_Name) VALUES("Ashutosh");
+
+mysql>select * from Employ;
+
+mysql> show databses;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databses' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| movies             |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.76 sec)
+
+mysql> CREATE database Employee_Info;
+Query OK, 1 row affected (0.22 sec)
+
+mysql> CREATE table Employee;
+ERROR 1046 (3D000): No database selected
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| employee_info      |
+| information_schema |
+| movies             |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> use employee_info
+Database changed
+mysql> CREATE table Employee;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> CREATE table Employee(Emp_Id int PRIMARY KEY AUTO_INCREMENT, Emp_Name varchar(25) UNIQUE, City varcahr(15) DEFAULT "Pune", Salary int CHECK(Salary>0));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'varcahr(15) DEFAULT "Pune", Salary int CHECK(Salary>0))' at line 1
+mysql> CREATE table Employee(Emp_Id int PRIMARY KEY AUTO_INCREMENT, Emp_Name varchar(25) UNIQUE, City varchar(15) DEFAULT "Pune", Salary int CHECK(Salary>0));
+Query OK, 0 rows affected (0.56 sec)
+
+mysql> INSERT INTO Employee(Emp_Id, EMp_Name, Salary) VALUES(01, "Arush", 10000);
+Query OK, 1 row affected (0.47 sec)
+
+mysql> INSERT INTO Employee(Emp_Name, Salary) VALUES("Arushi", 15000);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> INSERT INTO Employee(Emp_Name, Salary) VALUES("Arnav", 20000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO Employee(Emp_Name, Salary) VALUES("Ashutosh", 25000);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO Employee(Emp_Name, Salary) VALUES("Himanshu", 30000);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from Employee;
++--------+----------+------+--------+
+| Emp_Id | Emp_Name | City | Salary |
++--------+----------+------+--------+
+|      1 | Arush    | Pune |  10000 |
+|      2 | Arushi   | Pune |  15000 |
+|      3 | Arnav    | Pune |  20000 |
+|      4 | Ashutosh | Pune |  25000 |
+|      5 | Himanshu | Pune |  30000 |
++--------+----------+------+--------+
+5 rows in set (0.00 sec)
