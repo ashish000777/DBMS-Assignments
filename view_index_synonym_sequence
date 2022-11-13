@@ -1,0 +1,286 @@
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| amazon             |
+| assig2             |
+| employee_info      |
+| information_schema |
+| movies             |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
++--------------------+
+9 rows in set (1.96 sec)
+
+mysql> USE assig2;
+Database changed
+mysql> SHOW TABLES;
++------------------+
+| Tables_in_assig2 |
++------------------+
+| employee         |
++------------------+
+1 row in set (0.10 sec)
+
+mysql> DESC employee;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| em_id           | int         | NO   | PRI | NULL    |       |
+| em_name         | varchar(20) | YES  |     | NULL    |       |
+| em_joining_date | date        | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.04 sec)
+
+mysql> CREATE TABLE finance(pay_id int AUTO_INCREMENT PRIMARY KEY, em_id int, em_salary int, em_contract date, FOREIGN KEY(em_id) REFERENCES employee(em_id));
+Query OK, 0 rows affected (0.28 sec)
+
+mysql> DESC employee;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| em_id           | int         | NO   | PRI | NULL    |       |
+| em_name         | varchar(20) | YES  |     | NULL    |       |
+| em_joining_date | date        | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> DESC finance;
++-------------+------+------+-----+---------+----------------+
+| Field       | Type | Null | Key | Default | Extra          |
++-------------+------+------+-----+---------+----------------+
+| pay_id      | int  | NO   | PRI | NULL    | auto_increment |
+| em_id       | int  | YES  | MUL | NULL    |                |
+| em_salary   | int  | YES  |     | NULL    |                |
+| em_contract | date | YES  |     | NULL    |                |
++-------------+------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO employee(1, 'Ashish', '2022/11/10');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1, 'Ashish', '2022/11/10')' at line 1
+mysql> INSERT INTO employee(1, "Ashish", "2022/11/10");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1, "Ashish", "2022/11/10")' at line 1
+mysql> INSERT INTO employee(1, "Ashish", "2022/11/10");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1, "Ashish", "2022/11/10")' at line 1
+mysql> INSERT INTO employee VALUES(1, 'Ashish', '2022/11/10');
+Query OK, 1 row affected, 1 warning (0.19 sec)
+
+mysql> INSERT INTO employee VALUES(2, 'Ashutosh', '2022/10/5');
+Query OK, 1 row affected, 1 warning (0.05 sec)
+
+mysql> INSERT INTO employee VALUES(3, 'Aryan', '2022/09/8');
+Query OK, 1 row affected, 1 warning (0.04 sec)
+
+mysql> SELECT * FROM employee;
++-------+----------+-----------------+
+| em_id | em_name  | em_joining_date |
++-------+----------+-----------------+
+|     1 | Ashish   | 2022-11-10      |
+|     2 | Ashutosh | 2022-10-05      |
+|     3 | Aryan    | 2022-09-08      |
++-------+----------+-----------------+
+3 rows in set (0.01 sec)
+
+mysql> DESC finance;
++-------------+------+------+-----+---------+----------------+
+| Field       | Type | Null | Key | Default | Extra          |
++-------------+------+------+-----+---------+----------------+
+| pay_id      | int  | NO   | PRI | NULL    | auto_increment |
+| em_id       | int  | YES  | MUL | NULL    |                |
+| em_salary   | int  | YES  |     | NULL    |                |
+| em_contract | date | YES  |     | NULL    |                |
++-------------+------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO finance VALUES(1, 2000000, '2022/12/10');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO finance VALUES(1, 1, 2000000, '2022/12/10');
+Query OK, 1 row affected, 1 warning (0.17 sec)
+
+mysql> INSERT INTO finance VALUES(null, 1, 2000000, '2022/12/10');
+Query OK, 1 row affected, 1 warning (0.05 sec)
+
+mysql> INSERT INTO finance VALUES(1, 1, 2000000, '2022/12/10');
+ERROR 1062 (23000): Duplicate entry '1' for key 'finance.PRIMARY'
+mysql> DESC finance;
++-------------+------+------+-----+---------+----------------+
+| Field       | Type | Null | Key | Default | Extra          |
++-------------+------+------+-----+---------+----------------+
+| pay_id      | int  | NO   | PRI | NULL    | auto_increment |
+| em_id       | int  | YES  | MUL | NULL    |                |
+| em_salary   | int  | YES  |     | NULL    |                |
+| em_contract | date | YES  |     | NULL    |                |
++-------------+------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO finance VALUES(null, 2, 2000000, '2022/12/10');
+Query OK, 1 row affected, 1 warning (1.14 sec)
+
+mysql> SELECT * FROM finance;
++--------+-------+-----------+-------------+
+| pay_id | em_id | em_salary | em_contract |
++--------+-------+-----------+-------------+
+|      1 |     1 |   2000000 | 2022-12-10  |
+|      2 |     1 |   2000000 | 2022-12-10  |
+|      3 |     2 |   2000000 | 2022-12-10  |
++--------+-------+-----------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE INDex emp_details
+    -> as
+    -> SELECT e.em_id, e.em_name, f.em_salary
+    -> FROM employee AS e INNER JOIN finance AS f
+    -> WHERE e.em_id = f.em_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as
+SELECT e.em_id, e.em_name, f.em_salary
+FROM employee AS e INNER JOIN finance ' at line 2
+mysql> CREATE INDex emp_details
+    -> as
+    -> SELECT e.em_id, e.em_name, f.em_salary
+    -> FROM employee as e INNER JOIN finance as f
+    -> WHERE e.em_id = f.em_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as
+SELECT e.em_id, e.em_name, f.em_salary
+FROM employee as e INNER JOIN finance ' at line 2
+mysql>  CREATE INDex emp_details
+    ->     -> as
+    ->     -> SELECT e.em_id, e.em_name, f.em_salary
+    ->     -> FROM employee as e INNER JOIN finance as f
+    ->     -> WHERE e.em_id = f.em_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> as
+    -> SELECT e.em_id, e.em_name, f.em_salary
+    -> FROM employee as e IN' at line 2
+mysql> CREATE VIEW emp_details
+    -> AS
+    -> SELECT e.em_id, e.em_name, f.em_salary
+    -> FROM employee AS e INNER JOIN finance AS f
+    -> WHERE e.em_id = f.em_name;
+ERROR 1054 (42S22): Unknown column 'f.em_name' in 'where clause'
+mysql> CREATE VIEW emp_details
+    ->     -> AS
+    ->     -> SELECT e.em_id, e.em_name, f.em_salary
+    ->     -> FROM employee AS e INNER JOIN finance AS f
+    ->     -> WHERE e.em_id = f.em_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> AS
+    -> SELECT e.em_id, e.em_name, f.em_salary
+    -> FROM employee AS e IN' at line 2
+mysql> CREATE VIEW emp_details as SELECT e.em_id, e.em_name, f.em_salary FROM employee as e INNER JOIN finance as f WHERE e.em_id = f.em_id;
+Query OK, 0 rows affected (1.37 sec)
+
+mysql> SELECT * FROM emp_details;
++-------+----------+-----------+
+| em_id | em_name  | em_salary |
++-------+----------+-----------+
+|     1 | Ashish   |   2000000 |
+|     1 | Ashish   |   2000000 |
+|     2 | Ashutosh |   2000000 |
++-------+----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql>
+mysql> SELECT * FROM employee;
++-------+----------+-----------------+
+| em_id | em_name  | em_joining_date |
++-------+----------+-----------------+
+|     1 | Ashish   | 2022-11-10      |
+|     2 | Ashutosh | 2022-10-05      |
+|     3 | Aryan    | 2022-09-08      |
++-------+----------+-----------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM finance;
++--------+-------+-----------+-------------+
+| pay_id | em_id | em_salary | em_contract |
++--------+-------+-----------+-------------+
+|      1 |     1 |   2000000 | 2022-12-10  |
+|      2 |     1 |   2000000 | 2022-12-10  |
+|      3 |     2 |   2000000 | 2022-12-10  |
++--------+-------+-----------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE finance ADD INDEX salary(em_salary);
+Query OK, 0 rows affected (1.21 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> call sys.create_synonym_db('assig2', 'assignment2');
++-----------------------------------------------+
+| summary                                       |
++-----------------------------------------------+
+| Created 3 views in the `assignment2` database |
++-----------------------------------------------+
+1 row in set (1.36 sec)
+
+Query OK, 0 rows affected (1.38 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| amazon             |
+| assig2             |
+| assignment2        |
+| employee_info      |
+| information_schema |
+| movies             |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use assignment2;
+Database changed
+mysql> show tables;
++-----------------------+
+| Tables_in_assignment2 |
++-----------------------+
+| emp_details           |
+| employee              |
+| finance               |
++-----------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee;
++-------+----------+-----------------+
+| em_id | em_name  | em_joining_date |
++-------+----------+-----------------+
+|     1 | Ashish   | 2022-11-10      |
+|     2 | Ashutosh | 2022-10-05      |
+|     3 | Aryan    | 2022-09-08      |
++-------+----------+-----------------+
+3 rows in set (0.13 sec)
+
+mysql> select * from finance;
++--------+-------+-----------+-------------+
+| pay_id | em_id | em_salary | em_contract |
++--------+-------+-----------+-------------+
+|      1 |     1 |   2000000 | 2022-12-10  |
+|      2 |     1 |   2000000 | 2022-12-10  |
+|      3 |     2 |   2000000 | 2022-12-10  |
++--------+-------+-----------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from emp_details;
++-------+----------+-----------+
+| em_id | em_name  | em_salary |
++-------+----------+-----------+
+|     1 | Ashish   |   2000000 |
+|     1 | Ashish   |   2000000 |
+|     2 | Ashutosh |   2000000 |
++-------+----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> desc employee;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| em_id           | int         | NO   |     | NULL    |       |
+| em_name         | varchar(20) | YES  |     | NULL    |       |
+| em_joining_date | date        | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql>
